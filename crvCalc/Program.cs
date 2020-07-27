@@ -53,8 +53,18 @@ namespace crvCalc
         {
             return Num1 + Num2;
         }
-
-
+        public double Subtract()
+        {
+            return Num1 - Num2;
+        }
+        public double Multiply()
+        {
+            return Num1 * Num2;
+        }
+        public double Divide()
+        {
+            return Num1 / Num2;
+        }
 
 
     }
@@ -97,24 +107,46 @@ namespace crvCalc
 
     class Program
     {
-        
         static void Main(string[] args)
         {
             Title="crvCalc v0.01";
-            Operations calc = new Operations();
+            //Operations calc = new Operations();
             //WriteLine(calc.Add());
             
-            Expression exp1 = new Expression("12+(34-(2.5+5)+(6-5)/4)");
+            Expression exp1 = new Expression("152-(89.7+65.87)+(34.8-(72.5+5.98)+(6-5)/4)");
             WriteLine(exp1.expression);
             List<string> lists_1 = Expression.BracketsToSimple(exp1.expression);
             foreach (string item in lists_1) WriteLine(item);
 
-            int firstOpenBracket = exp1.expression.IndexOf('(');
-            WriteLine(firstOpenBracket);
+            
             int firstCloseBracket = exp1.expression.IndexOf(')');
             WriteLine(firstCloseBracket);
-            int secondOpenBracket = exp1.expression.IndexOf('(', firstOpenBracket+1);
-            WriteLine(secondOpenBracket);
+            do
+            {
+                int firstOpenBracket = exp1.expression.IndexOf('(');
+                int secondOpenBracket = exp1.expression.IndexOf('(', firstOpenBracket);
+
+            } while (true);
+
+
+
+            
+
+            
+                //string sub1 = exp1.expression.Substring(firstOpenBracket+1,firstCloseBracket-firstOpenBracket-1);
+                //WriteLine(sub1);
+                //char[] opers = { '+', '-', '*', '/' };
+                //int indexOpers = sub1.IndexOfAny(opers);
+                //WriteLine(indexOpers);
+            
+
+
+
+
+
+            
+
+            
 
 
             //Expression exp2 = new Expression("5-4*(4-3)-6+5-(3/2)");
