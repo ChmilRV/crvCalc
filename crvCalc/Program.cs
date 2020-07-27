@@ -1,8 +1,11 @@
 ﻿using System;
+using static System.Console;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using System.Xml.Schema;
 /*Разработать консольный калькулятор.
 При разработке рекомендуется:
 	использовать ООП (создать класс математических действий, в котором необходимо реализовать методы для выполнения арифметических действий и т.д.);
@@ -15,79 +18,78 @@ namespace crvCalc
 {
     class Operations
     {
-
         double num1;
         double num2;
         double result;
-        //double stored;
-        //Boolean isStored;
-
+        public double Num1
+        {
+            get
+            {
+                return num1;
+            }
+            set
+            {
+                num1 = value;
+            }
+        }
+        public double Num2
+        {
+            get
+            {
+                return num2;
+            }
+            set
+            {
+                num2 = value;
+            }
+        }
         public Operations() { }
+        public Operations(double _num1, double _num2)
+        {
+            Num1 = _num1;
+            Num2 = _num2;
+        }
         public double Add()
         {
-            return result = (this.num1 + this.num2);
+            return Num1 + Num2;
         }
-        public double Subtract()
-        {
-            return result = (this.num1 - this.num2);
-        }
-        public double Multiply()
-        {
-            return result = (this.num1 * this.num2);
-        }
-        public double Divide()
-        {
-            return result = ((this.num1) / (this.num2));
-        }
-        //public double SquareRootNumber1()
-        //{
-        //    result = Math.Sqrt(this.number1);
-        //    return result;
-        //}
-        //public double SquareRootNumber2()
-        //{
-        //    result = Math.Sqrt(this.number2);
-        //    return result;
-        //}
-        //public Boolean isMemoryUsed()
-        //{
-        //    if (this.stored == 0)
-        //    {
-        //        this.isStored = false;
-        //        return isStored;
-        //    }
-        //    else
-        //        this.isStored = true;
-        //    return this.isStored;
-        //}
-        //public double MemoryStore(double paramater_store1)
-        //{
-        //    this.stored = this.stored + paramater_store1;
-        //    return this.stored;
-        //}
-        //public double MemoryRecall()
-        //{
-        //    if (MemoryStore(this.stored) == 0)
-        //        return 0;
-        //    else
-        //        return MemoryStore(this.stored);
-        //}
-        //public double MemoryAdd(double paramater_store2)
-        //{
-        //    this.stored = this.stored + paramater_store2;
-        //    return this.stored;
-        //}
-        //public double MemorySubtract(double paramater_store3)
-        //{
-        //    this.stored = this.stored - paramater_store3;
-        //    return this.stored;
-        //}
-        //public double MemoryClear()
-        //{
-        //    return this.stored = 0;
-        //}
-    }
 
+
+
+
+    }
+    class Expression
+    {
+        public string expression;
+        public Expression(string expression)
+        {
+            this.expression = expression;
+        }
+
+        public static List<string> GetWithIn(string _expr)
+        {
+            List<string> res = new List<string>();
+            Regex bracketPattern = new Regex(@"\((?<val>.*?)\)", RegexOptions.Compiled | RegexOptions.Singleline);      //????????????
+            foreach (Match m in bracketPattern.Matches(_expr)) if (m.Success) res.Add(m.Groups["val"].Value);
+            return res;
+
+        }
+
+        public static List<string> BracketsToSimple(string _expr)
+        {
+            List<string> res = new List<string>();
+            int startBracket = _expr.IndexOf('(');
+
+
+
+
+
+
+            return res;
+        }
+
+
+    }
 
 
 
@@ -95,22 +97,44 @@ namespace crvCalc
 
     class Program
     {
+        
         static void Main(string[] args)
         {
-            Console.Title="crvCalc v0.01";
+            Title="crvCalc v0.01";
             Operations calc = new Operations();
-            try
-            {
-                
-                
+            //WriteLine(calc.Add());
+            
+            Expression exp1 = new Expression("12+(34-(2.5+5)+(6-5)/4)");
+            WriteLine(exp1.expression);
+            List<string> lists_1 = Expression.BracketsToSimple(exp1.expression);
+            foreach (string item in lists_1) WriteLine(item);
+
+            int firstOpenBracket = exp1.expression.IndexOf('(');
+            WriteLine(firstOpenBracket);
+            int firstCloseBracket = exp1.expression.IndexOf(')');
+            WriteLine(firstCloseBracket);
+            int secondOpenBracket = exp1.expression.IndexOf('(', firstOpenBracket+1);
+            WriteLine(secondOpenBracket);
 
 
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"{ex.Message}");
-            }
+            //Expression exp2 = new Expression("5-4*(4-3)-6+5-(3/2)");
+            //WriteLine(exp2.expression);
+            //List<string> lists_2 = Expression.GetWithIn(exp2.expression);
+            //foreach (string item in lists_2) WriteLine(item);
 
+
+
+
+
+            //try
+            //{
+            //
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine($"{ex.Message}");
+            //}
+            ReadKey();
         }
     }
 }
