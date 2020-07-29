@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Xml.Schema;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 /*Разработать консольный калькулятор.
 При разработке рекомендуется:
 	использовать ООП (создать класс математических действий, в котором необходимо реализовать методы для выполнения арифметических действий и т.д.);
@@ -21,7 +22,6 @@ namespace crvCalc
     {
         double num1;
         double num2;
-        double result;
         public double Num1
         {
             get
@@ -77,26 +77,33 @@ namespace crvCalc
             this.expression = expression;
         }
 
-        public static List<string> GetWithIn(string _expr)
-        {
-            List<string> res = new List<string>();
-            Regex bracketPattern = new Regex(@"\((?<val>.*?)\)", RegexOptions.Compiled | RegexOptions.Singleline);      //????????????
-            foreach (Match m in bracketPattern.Matches(_expr)) if (m.Success) res.Add(m.Groups["val"].Value);
-            return res;
+        //public static List<string> GetWithIn(string _expr)
+        //{
+        //    List<string> res = new List<string>();
+        //    Regex bracketPattern = new Regex(@"\((?<val>.*?)\)", RegexOptions.Compiled | RegexOptions.Singleline);      //????????????
+        //    foreach (Match m in bracketPattern.Matches(_expr)) if (m.Success) res.Add(m.Groups["val"].Value);
+        //    return res;
+        //}
 
+        public static string FindBracket(string _expr)
+        {
+            //поиск ()
+            int closeBracket = _expr.IndexOf(')');
+            int openBracket = (_expr.Substring(0, closeBracket)).LastIndexOf('(');
+            //вырезание подстроки
+            string sub = _expr.Substring(openBracket + 1, closeBracket - openBracket - 1);
+            return sub;
         }
-
-        public static List<string> BracketsToSimple(string _expr)
+        public static string BracketsToSimple(string _sub)
         {
-            List<string> res = new List<string>();
-            int startBracket = _expr.IndexOf('(');
+            
 
-            return res;
+
+            return "0";
         }
 
 
     }
-
 
 
 
@@ -108,27 +115,45 @@ namespace crvCalc
             //Operations calc = new Operations();
             //WriteLine(calc.Add());
             
-            Expression exp1 = new Expression("152-(89.7+5765,9438*655,83127)+(34.8-(72.5+5.98)+(6-5)/4)");
+            Expression exp1 = new Expression("152-(89,7+5765,9438*655,83127)+(34.8-(72.5+5.98)+(6-5)/4)");
             WriteLine(exp1.expression);
-            List<string> lists_1 = Expression.BracketsToSimple(exp1.expression);
-            foreach (string item in lists_1) WriteLine(item);
+            //List<string> lists_1 = Expression.BracketsToSimple(exp1.expression);
+            //foreach (string item in lists_1) WriteLine(item);
 
-            //поиск ()
-            int closeBracket = exp1.expression.IndexOf(')');
-            int openBracket = (exp1.expression.Substring(0,closeBracket)).LastIndexOf('(');
-            
-            //вырезание подстроки
-            string sub1 = exp1.expression.Substring(openBracket+1,closeBracket-openBracket-1);
-            WriteLine(sub1);
-            
+            ////поиск ()
+            //int closeBracket = exp1.expression.IndexOf(')');
+            //int openBracket = (exp1.expression.Substring(0,closeBracket)).LastIndexOf('(');
+
+            ////вырезание подстроки
+            //string sub = exp1.expression.Substring(openBracket+1,closeBracket-openBracket-1);
+            //WriteLine(sub);
+
+            string sub = Expression.FindBracket(exp1.expression);
+            WriteLine(sub);
+
             char[] opers = { '+', '-', '*', '/' };
             char[] opersFirst = { '*', '/' };  //первичный приоритет операторов
             char[] opersSecond = { '+', '-' };  //вторичный приоритет операторов
+            string[] numbers = sub.Split(opers);
+            foreach (string s in numbers) WriteLine(s);
 
-            string[] sub1Opers = sub1.Split(opers);
+            do
+            {
+                int indexOper = sub.IndexOf('*');
+                if ( indexOper!= -1)
+                {
 
-            foreach (string s in sub1Opers) WriteLine(s);
 
+
+                }
+
+
+
+
+            } while (sub.IndexOfAny(opers)!=-1);
+
+
+            //int indexOperFirst = sub1.;
 
 
             
