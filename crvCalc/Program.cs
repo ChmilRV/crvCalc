@@ -112,10 +112,8 @@ namespace crvCalc
         static void Main(string[] args)
         {
             Title="crvCalc v0.01";
-            //Operations calc = new Operations();
-            //WriteLine(calc.Add());
             
-            Expression exp1 = new Expression("152-(89,7+5765,9438*655,83127)+(34.8-(72.5+5.98)+(6-5)/4)");
+            Expression exp1 = new Expression("152-(1+1-2)+(34.8-(72.5+5.98)+(6-5)/4)");
             WriteLine(exp1.expression);
             //List<string> lists_1 = Expression.BracketsToSimple(exp1.expression);
             //foreach (string item in lists_1) WriteLine(item);
@@ -131,32 +129,86 @@ namespace crvCalc
             string sub = Expression.FindBracket(exp1.expression);
             WriteLine(sub);
 
+
             char[] opers = { '+', '-', '*', '/' };
-            char[] opersFirst = { '*', '/' };  //первичный приоритет операторов
-            char[] opersSecond = { '+', '-' };  //вторичный приоритет операторов
-            string[] numbers = sub.Split(opers);
-            foreach (string s in numbers) WriteLine(s);
+            //string[] numbers = sub.Split(opers);
+            //foreach (string s in numbers) WriteLine(s);
 
             do
             {
-                int indexOper = sub.IndexOf('*');
-                if ( indexOper!= -1)
+                if (sub.IndexOf('*') != -1)
                 {
-
-
-
+                    string[] numbers = sub.Split(opers);
+                    for (int i = 0; i < numbers.Length; i++)
+                    {
+                        if (sub.IndexOf(numbers[i]) == sub.IndexOf('*') + 1)
+                        {
+                            double num1 = Convert.ToDouble(numbers[i - 1]);
+                            double num2 = Convert.ToDouble(numbers[i]);
+                            Operations calc = new Operations(num1, num2);
+                            sub = sub.Replace(numbers[i - 1] + "*" + numbers[i], Convert.ToString(calc.Multiply()));
+                            //numbers = sub.Split(opers);
+                            //WriteLine(sub);
+                        }
+                    }
                 }
-
-
-
-
-            } while (sub.IndexOfAny(opers)!=-1);
+                if (sub.IndexOf('/') != -1)
+                {
+                    string[] numbers = sub.Split(opers);
+                    for (int i = 0; i < numbers.Length; i++)
+                    {
+                        if (sub.IndexOf(numbers[i]) == sub.IndexOf('/') + 1)
+                        {
+                            double num1 = Convert.ToDouble(numbers[i - 1]);
+                            double num2 = Convert.ToDouble(numbers[i]);
+                            Operations calc = new Operations(num1, num2);
+                            sub = sub.Replace(numbers[i - 1] + "/" + numbers[i], Convert.ToString(calc.Divide()));
+                            //numbers = sub.Split(opers);
+                            //WriteLine(sub);
+                        }
+                    }
+                }
+                if (sub.IndexOf('+') != -1)
+                {
+                    string[] numbers = sub.Split(opers);
+                    foreach (string s in numbers) WriteLine(s);
+                    for (int i = 0; i < numbers.Length; i++)
+                    {
+                        if (sub.IndexOf(numbers[i]) == sub.IndexOf('+') + 1)
+                        {
+                            double num1 = Convert.ToDouble(numbers[i - 1]);
+                            double num2 = Convert.ToDouble(numbers[i]);
+                            Operations calc = new Operations(num1, num2);
+                            sub = sub.Replace(numbers[i - 1] + "+" + numbers[i], Convert.ToString(calc.Add()));
+                            //numbers = sub.Split(opers);
+                            WriteLine(sub);
+                        }
+                    }
+                }
+                if (sub.IndexOf('-') != -1)
+                {
+                    string[] numbers = sub.Split(opers);
+                    foreach (string s in numbers) WriteLine(s);
+                    for (int i = 0; i < numbers.Length; i++)
+                    {
+                        if (sub.IndexOf(numbers[i]) == sub.IndexOf('-') + 1)
+                        {
+                            double num1 = Convert.ToDouble(numbers[i - 1]);
+                            double num2 = Convert.ToDouble(numbers[i]);
+                            Operations calc = new Operations(num1, num2);
+                            sub = sub.Replace(numbers[i - 1] + "-" + numbers[i], Convert.ToString(calc.Subtract()));
+                            //numbers = sub.Split(opers);
+                            WriteLine(sub);
+                        }
+                    }
+                }
+                WriteLine(sub);
+            }
+            while (sub.IndexOfAny(opers) == -1);
 
 
             //int indexOperFirst = sub1.;
-
-
-            
+                       
             //double num11 = Convert.ToDouble();
             //double num22 = Convert.ToDouble();
             //WriteLine(num11);
