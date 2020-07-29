@@ -120,29 +120,22 @@ namespace crvCalc
             //вырезание подстроки
             string sub1 = exp1.expression.Substring(openBracket+1,closeBracket-openBracket-1);
             WriteLine(sub1);
-
-            char[] subChar = sub1.ToCharArray();
-            List<int> positOper = new List<int>();
-            for (int i = 0; i < subChar.Length; i++)
-            {
-                if ((subChar[i] == '*') || (subChar[i] == '/') || (subChar[i] == '+') || (subChar[i] == '-'))
-                {
-                    positOper.Add(i);
-                }
-            }
-            foreach (int item in positOper) WriteLine(item);
-
+            
             char[] opers = { '+', '-', '*', '/' };
             char[] opersFirst = { '*', '/' };  //первичный приоритет операторов
             char[] opersSecond = { '+', '-' };  //вторичный приоритет операторов
 
-            //поиск оператора первичного приоритета
-            int indexOpersFirst = sub1.IndexOfAny(opersFirst);
-            WriteLine(indexOpersFirst);
-            double num11 = Convert.ToDouble(sub1.Substring(positOper[0]+1,positOper[1]-positOper[0]-1));
-            double num22 = Convert.ToDouble(sub1.Substring(indexOpersFirst+1));
-            WriteLine(num11);
-            WriteLine(num22);
+            string[] sub1Opers = sub1.Split(opers);
+
+            foreach (string s in sub1Opers) WriteLine(s);
+
+
+
+            
+            //double num11 = Convert.ToDouble();
+            //double num22 = Convert.ToDouble();
+            //WriteLine(num11);
+            //WriteLine(num22);
 
 
 
