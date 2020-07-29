@@ -113,7 +113,7 @@ namespace crvCalc
         {
             Title="crvCalc v0.01";
             
-            Expression exp1 = new Expression("152-(1+1-2)+(34.8-(72.5+5.98)+(6-5)/4)");
+            Expression exp1 = new Expression("152-(1+2-4)+(34.8-(72.5+5.98)+(6-5)/4)");
             WriteLine(exp1.expression);
             //List<string> lists_1 = Expression.BracketsToSimple(exp1.expression);
             //foreach (string item in lists_1) WriteLine(item);
@@ -139,6 +139,8 @@ namespace crvCalc
                 if (sub.IndexOf('*') != -1)
                 {
                     string[] numbers = sub.Split(opers);
+                    foreach (string s in numbers) WriteLine(s);
+                    if (sub.IndexOf('-') == 0) numbers[0] = '-' + numbers[0];
                     for (int i = 0; i < numbers.Length; i++)
                     {
                         if (sub.IndexOf(numbers[i]) == sub.IndexOf('*') + 1)
@@ -155,6 +157,8 @@ namespace crvCalc
                 if (sub.IndexOf('/') != -1)
                 {
                     string[] numbers = sub.Split(opers);
+                    foreach (string s in numbers) WriteLine(s);
+                    if (sub.IndexOf('-') == 0) numbers[0] = '-' + numbers[0];
                     for (int i = 0; i < numbers.Length; i++)
                     {
                         if (sub.IndexOf(numbers[i]) == sub.IndexOf('/') + 1)
@@ -172,6 +176,7 @@ namespace crvCalc
                 {
                     string[] numbers = sub.Split(opers);
                     foreach (string s in numbers) WriteLine(s);
+                    if (sub.IndexOf('-') == 0) numbers[0] = '-' + numbers[0];
                     for (int i = 0; i < numbers.Length; i++)
                     {
                         if (sub.IndexOf(numbers[i]) == sub.IndexOf('+') + 1)
@@ -189,6 +194,7 @@ namespace crvCalc
                 {
                     string[] numbers = sub.Split(opers);
                     foreach (string s in numbers) WriteLine(s);
+                    if (sub.IndexOf('-') == 0) numbers[0] = '-' + numbers[0];
                     for (int i = 0; i < numbers.Length; i++)
                     {
                         if (sub.IndexOf(numbers[i]) == sub.IndexOf('-') + 1)
