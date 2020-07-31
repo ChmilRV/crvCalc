@@ -91,10 +91,10 @@ namespace crvCalc
                     value = value.Insert(value.IndexOf(")(") + 1, "*");
                 }
 
-                //while (value.Substring(value.IndexOf('(') - 1, 1).IndexOfAny(new char[] { '*', '/', '+', '-' }) == -1)
-                //{
-                //    value = value.Insert(value.IndexOf('('), "*");
-                //}
+                while (value.Substring(value.IndexOf('(') - 1, 1).IndexOfAny(new char[] { '*', '/', '+', '-' }) == -1)
+                {
+                    value = value.Insert(value.IndexOf('('), "*");
+                }
 
 
 
@@ -165,7 +165,7 @@ namespace crvCalc
                                 }
 
 
-                                if (sub.IndexOf('-') == 0)
+                                if (result < 0)
                                 {
 
 
@@ -199,7 +199,7 @@ namespace crvCalc
         {
             Title="crvCalc v0.01";
 
-            string testString = "152+ (-10-12)- (100+5) ( 12+8)+(34.8-(72.5+5.98)(78-5)+(6-5)/4)"; 
+            string testString = "152+ 2(-10-12)(-2)- 3(100+5) ( 12+8)+(34.8-(72.5+5.98)(78-5)+(6-5)/4)"; 
 
             WriteLine(testString);
             ExpressionLogic exp1 = new ExpressionLogic(testString);
