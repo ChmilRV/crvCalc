@@ -119,7 +119,7 @@ namespace crvCalc
                     //    numbers[0] = '-' + numbers[0];
                     //    sub.Remove(0, 1);
                     //}
-                    do
+                    while (sub.IndexOf(op) != -1)
                     {
                         for (int i = 1; i < numbers.Length; i++)
                         {
@@ -145,13 +145,24 @@ namespace crvCalc
                                         result = calc.Subtract();
                                         break;
                                 }
+
+                                if (result < 0)
+                                {
+
+
+
+                                }
+
                                 sub = sub.Replace(numbers[i - 1] + op + numbers[i], Convert.ToString(result));
                                 WriteLine(sub);
                                 break;
                             }
                         }
                         numbers = sub.Split(opers);
-                    } while (sub.IndexOf(op) != -1);
+                        
+
+
+                    } 
                 }
             }
             while (sub.IndexOfAny(opers) != -1);
@@ -172,16 +183,16 @@ namespace crvCalc
         {
             Title="crvCalc v0.01";
             
-            ExpressionLogic exp1 = new ExpressionLogic("152-(100-22-12*3/2+5)+(34,8-(72,5+5,98)+(6-5)/4)");
+            ExpressionLogic exp1 = new ExpressionLogic("152-(100+5)+(34,8-(72,5+5,98)+(6-5)/4)");
             WriteLine(exp1.Expression);
             //Expression exp2 = new Expression("5-4*(4-3)-6+5-(3/2)");
             //WriteLine(exp2.expression);
 
 
             string tempExp = exp1.Expression;
-            do
-            {
 
+            while (tempExp.IndexOfAny(new char[]{'(',')' })!=-1)
+            {
                 string sub = ExpressionLogic.FindBracket(tempExp);
                 string tempSub = sub;
                 WriteLine(sub);
@@ -190,14 +201,8 @@ namespace crvCalc
                 WriteLine(tempExp);
 
 
-            } while (tempExp.IndexOf('(') != -1);
-
-
-
-
-
-
-
+            }
+            
 
 
             //try
