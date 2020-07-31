@@ -91,10 +91,11 @@ namespace crvCalc
                     value = value.Insert(value.IndexOf(")(") + 1, "*");
                 }
 
-                while (value.Substring(value.IndexOf('(') - 1, 1).IndexOfAny(new char[] { '*', '/', '+', '-' }) == -1)
-                {
-                    value = value.Insert(value.IndexOf('('), "*");
-                }
+                //while (value.Substring(value.IndexOf('(') - 1, 1).IndexOfAny(new char[] { '*', '/', '+', '-' }) == -1)
+                //{
+                //    value = value.Insert(value.IndexOf('('), "*");
+                //}
+
 
 
 
@@ -102,46 +103,45 @@ namespace crvCalc
                 expression = value;
             }
         }
-
         public ExpressionLogic(string _expression)
         {
             Expression = _expression;
         }
-               
-
         public static string FindBracket(string _expr)
         {
             int closeBracket = _expr.IndexOf(')');
             int openBracket = (_expr.Substring(0, closeBracket)).LastIndexOf('(');
-            string sub = _expr.Substring(openBracket + 1, closeBracket - openBracket - 1);
+            string sub;
+            if (closeBracket != -1 && openBracket != -1) sub = _expr.Substring(openBracket + 1, closeBracket - openBracket - 1);
+            else sub = _expr;
             return sub;
         }
         public static string BracketsToSimple(string sub)
         {
             IFormatProvider formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
             char[] opers = { '*', '/', '+', '-' };
+
+            if (sub.IndexOf('-') == 0)
+            {
+
+
+
+
+            }
+
+
             while (sub.IndexOfAny(opers) != -1)
             {
+
                 foreach (char op in opers)
                 {
                     string[] numbers = sub.Split(opers);
 
-                    if (numbers.Length == 1)
-                    {
 
-
-                    }
-
-                    //if (sub.IndexOf('-') == 0)
-                    //{
-                    //    numbers[0] = '-' + numbers[0];
-                    //    sub.Remove(0, 1);
-                    //}
                     while (sub.IndexOf(op) != -1)
                     {
                         for (int i = 1; i < numbers.Length; i++)
                         {
-
                             if (sub.IndexOf(numbers[i], sub.IndexOf(op)) == sub.IndexOf(op) + 1)
                             {
                                 double num1 = Convert.ToDouble(numbers[i - 1], formatter);
@@ -163,17 +163,23 @@ namespace crvCalc
                                         result = calc.Subtract();
                                         break;
                                 }
-                                if (result < 0)
+
+
+                                if (sub.IndexOf('-') == 0)
                                 {
 
+
+
+
                                 }
+
                                 sub = sub.Replace(numbers[i - 1] + op + numbers[i], Convert.ToString(result));
                                 WriteLine(sub);
                                 break;
                             }
                         }
                         numbers = sub.Split(opers);
-                    } 
+                    }
                 }
             }
             return sub;
@@ -193,7 +199,7 @@ namespace crvCalc
         {
             Title="crvCalc v0.01";
 
-            string testString = "152 - 2(100+5) ( 12+8)+(34.8-7(72.5+5.98)(78-5)+5(6-5)/4)";  //=-44115.23 - ?
+            string testString = "152+ (-10-12)- (100+5) ( 12+8)+(34.8-(72.5+5.98)(78-5)+(6-5)/4)"; 
 
             WriteLine(testString);
             ExpressionLogic exp1 = new ExpressionLogic(testString);
@@ -201,22 +207,21 @@ namespace crvCalc
 
             WriteLine(exp1.Expression);
 
-            //WriteLine(exp1.Expression.Substring(exp1.Expression.IndexOf('(') - 1, 1).IndexOfAny(new char[] { '*', '/', '+', '-' }));
-            //WriteLine(exp1.Expression.Insert(exp1.Expression.IndexOf('('), "*"));
+            
 
-            //string tempExp = exp1.Expression;
+            string tempExp = exp1.Expression;
 
-            //while (tempExp.IndexOfAny(new char[]{'(',')' })!=-1)
-            //{
-            //    string sub = ExpressionLogic.FindBracket(tempExp);
-            //    string tempSub = sub;
-            //    WriteLine(sub);
-            //    string simple = ExpressionLogic.BracketsToSimple(sub);
-            //    tempExp = tempExp.Replace('(' + tempSub + ')', simple);
-            //    WriteLine(tempExp);
+            while (tempExp.IndexOfAny(new char[] { '(', ')' }) != -1)
+            {
+                string sub = ExpressionLogic.FindBracket(tempExp);
+                string tempSub = sub;
+                WriteLine(sub);
+                string simple = ExpressionLogic.BracketsToSimple(sub);
+                tempExp = tempExp.Replace('(' + tempSub + ')', simple);
+                WriteLine(tempExp);
 
 
-            //}
+            }
 
 
 
