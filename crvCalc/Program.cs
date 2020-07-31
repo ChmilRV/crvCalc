@@ -80,22 +80,36 @@ namespace crvCalc
             }
             set
             {
+                while (value.IndexOf(" ") != -1)
+                {
+                    value = value.Remove(value.IndexOf(" "), 1);
+                }
+
+                while (value.IndexOf(")(") != -1)
+                {
+                    value = value.Insert(value.IndexOf(")(") + 1, "*");
+                }
+
+
+
+
+                while (value.Substring(value.IndexOf('(') - 1, 1).IndexOfAny(new char[] { '*', '/', '+', '-' }) == -1)
+                {
+                    value = value.Insert(value.IndexOf('('), "*");
+                }
+
+
+
+
                 expression = value;
             }
         }
 
-        public ExpressionLogic(string expression)
+        public ExpressionLogic(string _expression)
         {
-            this.expression = expression;
+            Expression = _expression;
         }
-
-        //public static List<string> GetWithIn(string _expr)
-        //{
-        //    List<string> res = new List<string>();
-        //    Regex bracketPattern = new Regex(@"\((?<val>.*?)\)", RegexOptions.Compiled | RegexOptions.Singleline);      //????????????
-        //    foreach (Match m in bracketPattern.Matches(_expr)) if (m.Success) res.Add(m.Groups["val"].Value);
-        //    return res;
-        //}
+               
 
         public static string FindBracket(string _expr)
         {
@@ -109,11 +123,18 @@ namespace crvCalc
         public static string BracketsToSimple(string sub)
         {
             char[] opers = { '*', '/', '+', '-' };
-            do
+            while (sub.IndexOfAny(opers) != -1)
             {
                 foreach (char op in opers)
                 {
                     string[] numbers = sub.Split(opers);
+
+                    if (numbers.Length == 1)
+                    {
+
+
+                    }
+
                     //if (sub.IndexOf('-') == 0)
                     //{
                     //    numbers[0] = '-' + numbers[0];
@@ -145,27 +166,19 @@ namespace crvCalc
                                         result = calc.Subtract();
                                         break;
                                 }
-
                                 if (result < 0)
                                 {
 
-
-
                                 }
-
                                 sub = sub.Replace(numbers[i - 1] + op + numbers[i], Convert.ToString(result));
                                 WriteLine(sub);
                                 break;
                             }
                         }
                         numbers = sub.Split(opers);
-                        
-
-
                     } 
                 }
             }
-            while (sub.IndexOfAny(opers) != -1);
             return sub;
         }
 
@@ -182,27 +195,32 @@ namespace crvCalc
         static void Main(string[] args)
         {
             Title="crvCalc v0.01";
-            
-            ExpressionLogic exp1 = new ExpressionLogic("152-(100+5)+(34,8-(72,5+5,98)+(6-5)/4)");
+
+            string testString = "152 - 2(100+5) ( 12+8)+(34,8-7(72,5+5,98)(78-5)+5(6-5)/4)";  //=-44115,23 - ?
+
+            WriteLine(testString);
+            ExpressionLogic exp1 = new ExpressionLogic(testString);
+
+
             WriteLine(exp1.Expression);
-            //Expression exp2 = new Expression("5-4*(4-3)-6+5-(3/2)");
-            //WriteLine(exp2.expression);
+
+            //WriteLine(exp1.Expression.Substring(exp1.Expression.IndexOf('(') - 1, 1).IndexOfAny(new char[] { '*', '/', '+', '-' }));
+            //WriteLine(exp1.Expression.Insert(exp1.Expression.IndexOf('('), "*"));
+
+            //string tempExp = exp1.Expression;
+
+            //while (tempExp.IndexOfAny(new char[]{'(',')' })!=-1)
+            //{
+            //    string sub = ExpressionLogic.FindBracket(tempExp);
+            //    string tempSub = sub;
+            //    WriteLine(sub);
+            //    string simple = ExpressionLogic.BracketsToSimple(sub);
+            //    tempExp = tempExp.Replace('(' + tempSub + ')', simple);
+            //    WriteLine(tempExp);
 
 
-            string tempExp = exp1.Expression;
+            //}
 
-            while (tempExp.IndexOfAny(new char[]{'(',')' })!=-1)
-            {
-                string sub = ExpressionLogic.FindBracket(tempExp);
-                string tempSub = sub;
-                WriteLine(sub);
-                string simple = ExpressionLogic.BracketsToSimple(sub);
-                tempExp = tempExp.Replace('(' + tempSub + ')', simple);
-                WriteLine(tempExp);
-
-
-            }
-            
 
 
             //try
