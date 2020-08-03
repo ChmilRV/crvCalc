@@ -125,17 +125,22 @@ namespace crvCalc
         {
             IFormatProvider formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
             char[] opers = { '*', '/', '+', '-' };
+            string[] numbers;
 
-            
-            while (sub.IndexOfAny(opers) != -1)
+            while (sub.IndexOfAny(opers, 1) != -1)
             {
 
                 foreach (char op in opers)
                 {
-                    string[] numbers = sub.Split(opers);
+                    
+                    if (sub.IndexOf('-')==0) 
+                    {
+                        numbers = sub.Remove(0).Split(opers);
+                        numbers[0] = '-' + numbers[0];
+                    }
+                    else numbers = sub.Split(opers);
 
-
-                    while (sub.IndexOf(op) != -1 )
+                    while (sub.IndexOf(op, 1) != -1 )
                     {
                         for (int i = 1; i < numbers.Length; i++)
                         {
@@ -167,8 +172,13 @@ namespace crvCalc
                             }
                         }
 
-                        numbers = sub.Split(opers);
-                        
+                        if (sub.IndexOf('-') == 0)
+                        {
+                            numbers = sub.Remove(0).Split(opers);
+                            numbers[0] = '-' + numbers[0];
+                        }
+                        else numbers = sub.Split(opers);
+
                     }
         
                 }
@@ -192,7 +202,7 @@ namespace crvCalc
             Title="crvCalc v0.01";
 
             //string testString = "152+ 2(-10-12)(-2)- 3(100+5) ( 12+8)+(34.8-(72.5+5.98)(78-5)+(6-5)/4)";
-            string testString = "(125+25-15)(3-18)-25";
+            string testString = "(125+25-15)+(3-18)-25";
 
 
             WriteLine(testString);
