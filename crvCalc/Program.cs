@@ -91,10 +91,10 @@ namespace crvCalc
                     value = value.Insert(value.IndexOf(")(") + 1, "*");
                 }
 
-                while (value.Substring(value.IndexOf('(') - 1, 1).IndexOfAny(new char[] { '*', '/', '+', '-' }) == -1)
-                {
-                    value = value.Insert(value.IndexOf('('), "*");
-                }
+                //while (value.Substring(value.IndexOf('(') - 1, 1).IndexOfAny(new char[] { '*', '/', '+', '-' }) == -1)
+                //{
+                //    value = value.Insert(value.IndexOf('('), "*");
+                //}
 
 
 
@@ -109,10 +109,15 @@ namespace crvCalc
         }
         public static string FindBracket(string _expr)
         {
-            int closeBracket = _expr.IndexOf(')');
-            int openBracket = (_expr.Substring(0, closeBracket)).LastIndexOf('(');
+
             string sub;
-            if (closeBracket != -1 && openBracket != -1) sub = _expr.Substring(openBracket + 1, closeBracket - openBracket - 1);
+            int openBracket;
+            int closeBracket = _expr.IndexOf(')');
+            if (closeBracket != -1)
+            {
+                openBracket = (_expr.Substring(0, closeBracket)).LastIndexOf('(');
+                sub = _expr.Substring(openBracket + 1, closeBracket - openBracket - 1);
+            }
             else sub = _expr;
             return sub;
         }
@@ -121,15 +126,7 @@ namespace crvCalc
             IFormatProvider formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
             char[] opers = { '*', '/', '+', '-' };
 
-            if (sub.IndexOf('-') == 0)
-            {
-
-
-
-
-            }
-
-
+            
             while (sub.IndexOfAny(opers) != -1)
             {
 
@@ -138,7 +135,7 @@ namespace crvCalc
                     string[] numbers = sub.Split(opers);
 
 
-                    while (sub.IndexOf(op) != -1)
+                    while (sub.IndexOf(op) != -1 )
                     {
                         for (int i = 1; i < numbers.Length; i++)
                         {
@@ -164,23 +161,18 @@ namespace crvCalc
                                         break;
                                 }
 
-
-                                if (result < 0)
-                                {
-
-
-
-
-                                }
-
                                 sub = sub.Replace(numbers[i - 1] + op + numbers[i], Convert.ToString(result));
                                 WriteLine(sub);
                                 break;
                             }
                         }
+
                         numbers = sub.Split(opers);
+                        
                     }
+        
                 }
+
             }
             return sub;
         }
@@ -199,7 +191,9 @@ namespace crvCalc
         {
             Title="crvCalc v0.01";
 
-            string testString = "152+ 2(-10-12)(-2)- 3(100+5) ( 12+8)+(34.8-(72.5+5.98)(78-5)+(6-5)/4)"; 
+            //string testString = "152+ 2(-10-12)(-2)- 3(100+5) ( 12+8)+(34.8-(72.5+5.98)(78-5)+(6-5)/4)";
+            string testString = "(125+25-15)(3-18)-25";
+
 
             WriteLine(testString);
             ExpressionLogic exp1 = new ExpressionLogic(testString);
@@ -211,31 +205,32 @@ namespace crvCalc
 
             string tempExp = exp1.Expression;
 
-            while (tempExp.IndexOfAny(new char[] { '(', ')' }) != -1)
+            do
             {
                 string sub = ExpressionLogic.FindBracket(tempExp);
                 string tempSub = sub;
                 WriteLine(sub);
                 string simple = ExpressionLogic.BracketsToSimple(sub);
-                tempExp = tempExp.Replace('(' + tempSub + ')', simple);
+                if (tempExp.IndexOfAny(new char[] { '(', ')' }) !=-1 ) tempExp = tempExp.Replace('(' + tempSub + ')', simple);
+                else tempExp = tempExp.Replace(tempSub, simple);
+
                 WriteLine(tempExp);
 
-
-            }
-
+            } while (tempExp.IndexOfAny(new char[] { '*', '/', '+', '-' }) != -1);
 
 
-            //try
-            //{
-            //
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine($"{ex.Message}");
-            //}
+
+                //try
+                //{
+                //
+                //}
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine($"{ex.Message}");
+                //}
 
 
-            ReadKey();
+                ReadKey();
         }
     }
 }
