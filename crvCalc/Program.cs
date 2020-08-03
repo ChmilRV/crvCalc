@@ -135,7 +135,7 @@ namespace crvCalc
                     
                     if (sub.IndexOf('-')==0) 
                     {
-                        numbers = sub.Remove(0).Split(opers);
+                        numbers = (sub.Remove(0,1)).Split(opers);
                         numbers[0] = '-' + numbers[0];
                     }
                     else numbers = sub.Split(opers);
@@ -144,7 +144,7 @@ namespace crvCalc
                     {
                         for (int i = 1; i < numbers.Length; i++)
                         {
-                            if (sub.IndexOf(numbers[i], sub.IndexOf(op)) == sub.IndexOf(op) + 1)
+                            if (sub.IndexOf(numbers[i], sub.IndexOf(op,1)) == sub.IndexOf(op,1) + 1)
                             {
                                 double num1 = Convert.ToDouble(numbers[i - 1], formatter);
                                 double num2 = Convert.ToDouble(numbers[i], formatter);
@@ -166,7 +166,18 @@ namespace crvCalc
                                         break;
                                 }
 
-                                sub = sub.Replace(numbers[i - 1] + op + numbers[i], Convert.ToString(result));
+                                if (result >= 0) sub = sub.Replace(numbers[i - 1] + op + numbers[i], Convert.ToString(result));
+                                else 
+                                {
+                                    sub = sub.Replace(numbers[i - 1] + op + numbers[i], Convert.ToString(result));
+
+
+                                    //
+                                    //
+
+
+                                }
+
                                 WriteLine(sub);
                                 break;
                             }
@@ -174,7 +185,7 @@ namespace crvCalc
 
                         if (sub.IndexOf('-') == 0)
                         {
-                            numbers = sub.Remove(0).Split(opers);
+                            numbers = sub.Remove(0,1).Split(opers);
                             numbers[0] = '-' + numbers[0];
                         }
                         else numbers = sub.Split(opers);
@@ -202,7 +213,7 @@ namespace crvCalc
             Title="crvCalc v0.01";
 
             //string testString = "152+ 2(-10-12)(-2)- 3(100+5) ( 12+8)+(34.8-(72.5+5.98)(78-5)+(6-5)/4)";
-            string testString = "(125+25-15)+(3-18)-25";
+            string testString = "(-125+25-15)+(3-18)-25";
 
 
             WriteLine(testString);
