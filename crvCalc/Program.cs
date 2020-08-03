@@ -169,13 +169,14 @@ namespace crvCalc
                                 if (result >= 0) sub = sub.Replace(numbers[i - 1] + op + numbers[i], Convert.ToString(result));
                                 else 
                                 {
+
+
+
                                     sub = sub.Replace(numbers[i - 1] + op + numbers[i], Convert.ToString(result));
 
 
+                                    //при отрицательном результате реализовать вынос - за скобки
                                     //
-                                    //
-
-
                                 }
 
                                 WriteLine(sub);
@@ -212,8 +213,8 @@ namespace crvCalc
         {
             Title="crvCalc v0.01";
 
-            //string testString = "152+ 2(-10-12)(-2)- 3(100+5) ( 12+8)+(34.8-(72.5+5.98)(78-5)+(6-5)/4)";
-            string testString = "(-125+25-15)+(3-18)-25";
+            string testString = "152+ 5*(-10-12)(-2)- 3(100+5) ( 12+8)+(34.8-(72.5+5.98)(78-5)+(6-5)/4)";
+            //string testString = "(-125+25-15)+(3-18)-25";
 
 
             WriteLine(testString);
