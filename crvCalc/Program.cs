@@ -242,17 +242,21 @@ namespace crvCalc
 				WriteLine(sub);
 				string simple = ExpressionLogic.BracketsToSimple(sub);
 
-				if (simple.IndexOf('-') != 0)
-				{
-					if (tempExp.IndexOfAny(new char[] { '(', ')' }) != -1) tempExp = tempExp.Replace('(' + tempSub + ')', simple);
-					else tempExp = tempExp.Replace(tempSub, simple);
-				}
-				else
+				if (simple.IndexOf('-') == 0)
 				{
 					if (tempExp.IndexOfAny(new char[] { '(', ')' }) != -1)
 					{
-						tempExp = tempExp.Replace('(' + tempSub + ')', simple);
+						tempExp = tempExp.Replace('(' + tempSub + ')', simple.Substring(1));
+						if (tempExp.IndexOf('+') > tempExp.IndexOf('-'))
+                        {
+							tempExp = tempExp.Substring(tempExp.LastIndexOf(simple.Substring(1))).Replace('+', '-');
 
+                        }
+                        else
+                        {
+							tempExp = tempExp.Substring(tempExp.LastIndexOf(simple.Substring(1))).Replace('-', '+');
+
+						}
 
 
 					}
@@ -262,12 +266,11 @@ namespace crvCalc
 
 
 					}
-
-
-
-
-
-
+				}
+				else
+				{
+					if (tempExp.IndexOfAny(new char[] { '(', ')' }) != -1) tempExp = tempExp.Replace('(' + tempSub + ')', simple);
+					else tempExp = tempExp.Replace(tempSub, simple);
 				}
 
 				
