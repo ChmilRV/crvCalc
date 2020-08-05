@@ -123,7 +123,7 @@ namespace crvCalc
 		}
 		public static string BracketsToSimple(string sub)
 		{
-			IFormatProvider formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
+			//IFormatProvider formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
 			char[] opers = { '*', '/', '+', '-' };
 			string[] numbers;
 
@@ -146,8 +146,8 @@ namespace crvCalc
 						{
 							if (sub.IndexOf(numbers[i], sub.IndexOf(op,1)) == sub.IndexOf(op,1) + 1)
 							{
-								double num1 = Convert.ToDouble(numbers[i - 1], formatter);
-								double num2 = Convert.ToDouble(numbers[i], formatter);
+								double num1 = Convert.ToDouble(numbers[i - 1]/*, formatter*/);
+								double num2 = Convert.ToDouble(numbers[i]/*, formatter*/);
 								Operations calc = new Operations(num1, num2);
 								double result = 0;
 								switch (op)
@@ -221,8 +221,8 @@ namespace crvCalc
 		{
 			Title="crvCalc v0.01";
 
-			//string testString = "152+ 5* (-10-12)(-2)- 3*(100+5) ( 12+8)+(34.8-(72.5+5.98)(78-5)+(6-5)/4)";
-			string testString = "2*(-125+25-15)+(3-18)-25";
+			string testString = "152+ (-10-12)- (100+5) ( 12+8)+(34,8-(72,5+5,98)(78-5)+(4-5)/4)";
+			//string testString = "2*(-125+25-15)+(3-18)-25";
 
 
 			WriteLine(testString);
@@ -289,7 +289,7 @@ namespace crvCalc
 
 				WriteLine(tempExp);
 
-			} while (tempExp.IndexOfAny(new char[] { '*', '/', '+', '-' }) != -1);
+			} while (tempExp.IndexOfAny(new char[] { '*', '/', '+', '-' }) != -1 || tempExp.IndexOf('-')==0);
 
 
 
