@@ -221,8 +221,8 @@ namespace crvCalc
 		{
 			Title="crvCalc v0.01";
 
-			string testString = "152+ (-10-12)- (100+5) ( 12+8)+(34,8-(72,5+5,98)(78-5)+(4-5)/4)";
-			//string testString = "2*(-125+25-15)+(3-18)-25";
+			//string testString = "152+ (-10-12)- (100+5) ( 12+8)+(34,8-(72,5+5,98)(78-5)+(4-5)/4)";
+			string testString = "(-125+25-15)+(3-18)-25";
 
 
 			WriteLine(testString);
