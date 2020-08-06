@@ -167,27 +167,8 @@ namespace crvCalc
 								}
 
 								sub = sub.Replace(numbers[i - 1] + op + numbers[i], Convert.ToString(result));
-
-
-								//if (result >= 0) sub = sub.Replace(numbers[i - 1] + op + numbers[i], Convert.ToString(result));
-								//else 
-								//{
-
-								//	sub = sub.Replace(numbers[i - 1] + op + numbers[i], Convert.ToString(result));
-								//	//if (sub.LastIndexOf('-', sub.IndexOf(numbers[i - 1])) > sub.LastIndexOf('+', sub.IndexOf(numbers[i - 1])))
-								//	//{
-								//	//	sub = sub.Substring(sub.IndexOf(numbers[i - 1]), 1).Replace('-','+');
-								//	//}
-								//	//else
-								//	//{
-								//	//	sub = sub.Substring(sub.IndexOf(numbers[i - 1]), 1).Replace('+', '-');
-								//	//}
-
-								//	//при отрицательном результате реализовать вынос - за скобки
-								//	//
-								//}
-
-								WriteLine(sub);
+								
+								//WriteLine(sub);
 								break;
 							}
 						}
@@ -221,8 +202,8 @@ namespace crvCalc
 		{
 			Title="crvCalc v0.01";
 
-			//string testString = "152+ (-10-12)- (100+5) ( 12+8)+(34,8-(72,5+5,98)(78-5)+(4-5)/4)";
-			string testString = "(-125+25-15)+(3-18)-25";
+			string testString = "2*(-10-12)- 2*(100+5) ( 8-13)+(34,8-(72,5+5,98)(78-5)+(4-5)/4)*(-5)";
+			//string testString = "(-125+25-15)+(3-18)*2-25";
 
 
 			WriteLine(testString);
@@ -239,22 +220,21 @@ namespace crvCalc
 			{
 				string sub = ExpressionLogic.FindBracket(tempExp);
 				string tempSub = sub;
-				WriteLine(sub);
+				//WriteLine(sub);
 				string simple = ExpressionLogic.BracketsToSimple(sub);
 
 				if (tempExp.IndexOfAny(new char[] { '(', ')' }) != -1) tempExp = tempExp.Replace('(' + tempSub + ')', simple);
 
 				else tempExp = tempExp.Replace(tempSub, simple);
 
-				WriteLine(tempExp);
+				//WriteLine(tempExp);
 
 				tempExp = tempExp.Replace("+-","-");
 				tempExp = tempExp.Replace("--", "+");
-				//tempExp = tempExp.Replace("*-", "-");
-								
+				
 				WriteLine(tempExp);
 
-			} while (tempExp.Split(new char[] { '*', '/', '+', '-' }).Length > 2 /*tempExp.IndexOfAny(new char[] { '*', '/', '+', '-' }) != -1*/);
+			} while (tempExp.Split(new char[] { '*', '/', '+', '-' }).Length > 2 );
 
 
 
