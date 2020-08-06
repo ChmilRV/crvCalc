@@ -91,10 +91,6 @@ namespace crvCalc
 					value = value.Insert(value.IndexOf(")(") + 1, "*");
 				}
 
-				//while (value.Substring(value.IndexOf('(') - 1, 1).IndexOfAny(new char[] { '*', '/', '+', '-' }) == -1)
-				//{
-				//    value = value.Insert(value.IndexOf('('), "*");
-				//}
 
 
 
@@ -204,7 +200,36 @@ namespace crvCalc
 
 				tempExp = tempExp.Replace("+-", "-");
                 tempExp = tempExp.Replace("--", "+");
-
+				
+                if (tempExp.IndexOf("*-")!=-1)
+                {
+					char[] tempExpArray=tempExp.ToCharArray();
+                    for (int i = 1; i < tempExpArray.Length; i++)
+                    {
+						if (tempExpArray[i] == '*' && tempExpArray[i + 1] == '-')
+                        {
+							for (int j = i; j > 0; j--)
+                            {
+                                if (tempExpArray[j] == '-')
+                                {
+									tempExpArray[j] = '+';
+									break;
+                                }
+								if (tempExpArray[j] == '+')
+								{
+									tempExpArray[j] = '-';
+									break;
+								}
+							}
+							tempExpArray[i + 1] = ' ';
+                        }
+					}
+					tempExp = new string(tempExpArray);
+					while (tempExp.IndexOf(" ") != -1)
+					{
+						tempExp = tempExp.Remove(tempExp.IndexOf(" "), 1);
+					}
+				}
 
                 WriteLine(tempExp);
 
@@ -227,8 +252,8 @@ namespace crvCalc
 		{
 			Title="crvCalc v0.01";
 
-			//string testString = "-2*(-10-12)- 2*(100+5) ( 8-13)+(34,8-(72,5+5,98)(78-5)+(4-5)/4)*(-5)";
-			string testString = "(-125+25-15)+(3-18)*2-25";
+			string testString = "-2*(-10-12)- 2*(100+5) ( 8-13)+(34,8-(72,5+5,98)(78-5)+(4-5)/4)*(-5)";
+			//string testString = "(-125+25-15)+(3-18)*2-25";
 			WriteLine(testString);
 			ExpressionLogic exp1 = new ExpressionLogic(testString);
 			WriteLine(exp1.Expression);
