@@ -189,6 +189,31 @@ namespace crvCalc
 		}
 
 
+		public static string ExpressionToResult(string _expr)
+		{
+            string tempExp = _expr;
+			do
+            {
+                string sub = FindBracket(tempExp);
+                string tempSub = sub;
+                //WriteLine(sub);
+                string simple = BracketsToSimple(sub);
+				if (tempExp.IndexOfAny(new char[] { '(', ')' }) != -1) tempExp = tempExp.Replace('(' + tempSub + ')', simple);
+                else tempExp = tempExp.Replace(tempSub, simple);
+				//WriteLine(tempExp);
+
+				tempExp = tempExp.Replace("+-", "-");
+                tempExp = tempExp.Replace("--", "+");
+
+
+                WriteLine(tempExp);
+
+            } while (tempExp.Split(new char[] { '*', '/', '+', '-' }).Length > 2);
+
+			return tempExp;
+		}
+
+
 
 
 
@@ -202,54 +227,29 @@ namespace crvCalc
 		{
 			Title="crvCalc v0.01";
 
-			string testString = "-2*(-10-12)- 2*(100+5) ( 8-13)+(34,8-(72,5+5,98)(78-5)+(4-5)/4)*(-5)";
-			//string testString = "(-125+25-15)+(3-18)*2-25";
-
-
+			//string testString = "-2*(-10-12)- 2*(100+5) ( 8-13)+(34,8-(72,5+5,98)(78-5)+(4-5)/4)*(-5)";
+			string testString = "(-125+25-15)+(3-18)*2-25";
 			WriteLine(testString);
 			ExpressionLogic exp1 = new ExpressionLogic(testString);
-
-
 			WriteLine(exp1.Expression);
+			string tempExp = exp1.Expression;
+			string resultExp = ExpressionLogic.ExpressionToResult(tempExp);
 
 			
 
-			string tempExp = exp1.Expression;
+			WriteLine(resultExp);
 
-			do
-			{
-				string sub = ExpressionLogic.FindBracket(tempExp);
-				string tempSub = sub;
-				//WriteLine(sub);
-				string simple = ExpressionLogic.BracketsToSimple(sub);
-
-				
-
-				if (tempExp.IndexOfAny(new char[] { '(', ')' }) != -1) tempExp = tempExp.Replace('(' + tempSub + ')', simple);
-				else tempExp = tempExp.Replace(tempSub, simple);
-
-				//WriteLine(tempExp);
-
-				tempExp = tempExp.Replace("+-","-");
-				tempExp = tempExp.Replace("--", "+");
-				
-				WriteLine(tempExp);
-
-			} while (tempExp.Split(new char[] { '*', '/', '+', '-' }).Length > 2 );
+			//try
+			//{
+			//
+			//}
+			//catch (Exception ex)
+			//{
+			//    Console.WriteLine($"{ex.Message}");
+			//}
 
 
-
-				//try
-				//{
-				//
-				//}
-				//catch (Exception ex)
-				//{
-				//    Console.WriteLine($"{ex.Message}");
-				//}
-
-
-				ReadKey();
+			ReadKey();
 		}
 	}
 }
