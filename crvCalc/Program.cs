@@ -202,7 +202,7 @@ namespace crvCalc
 		{
 			Title="crvCalc v0.01";
 
-			string testString = "2*(-10-12)- 2*(100+5) ( 8-13)+(34,8-(72,5+5,98)(78-5)+(4-5)/4)*(-5)";
+			string testString = "-2*(-10-12)- 2*(100+5) ( 8-13)+(34,8-(72,5+5,98)(78-5)+(4-5)/4)*(-5)";
 			//string testString = "(-125+25-15)+(3-18)*2-25";
 
 
@@ -223,8 +223,9 @@ namespace crvCalc
 				//WriteLine(sub);
 				string simple = ExpressionLogic.BracketsToSimple(sub);
 
-				if (tempExp.IndexOfAny(new char[] { '(', ')' }) != -1) tempExp = tempExp.Replace('(' + tempSub + ')', simple);
+				
 
+				if (tempExp.IndexOfAny(new char[] { '(', ')' }) != -1) tempExp = tempExp.Replace('(' + tempSub + ')', simple);
 				else tempExp = tempExp.Replace(tempSub, simple);
 
 				//WriteLine(tempExp);
