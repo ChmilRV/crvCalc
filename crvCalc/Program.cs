@@ -45,7 +45,6 @@ namespace crvCalc
 				num2 = value;
 			}
 		}
-		//public Operations() { }
 		public Operations(double _num1, double _num2)
 		{
 			Num1 = _num1;
@@ -92,8 +91,8 @@ namespace crvCalc
 				}
 
 
-
-
+				//добавить конвертацию 2(  ) -> 2*(  )
+				//или не бодавлять  ???
 
 
 				expression = value;
@@ -120,7 +119,7 @@ namespace crvCalc
 		public static string BracketsToSimple(string sub)
 		{
 			//IFormatProvider formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
-			char[] opers = { '*', '/', '+', '-' };
+			char[] opers = { '*', '/', '-', '+' };
 			string[] numbers;
 
 			while (sub.IndexOfAny(opers, 1) != -1)
@@ -164,7 +163,7 @@ namespace crvCalc
 
 								sub = sub.Replace(numbers[i - 1] + op + numbers[i], Convert.ToString(result));
 								
-								//WriteLine(sub);
+								WriteLine(sub);
 								break;
 							}
 						}
@@ -192,15 +191,16 @@ namespace crvCalc
             {
                 string sub = FindBracket(tempExp);
                 string tempSub = sub;
-                //WriteLine(sub);
+                WriteLine(sub);
                 string simple = BracketsToSimple(sub);
 				if (tempExp.IndexOfAny(new char[] { '(', ')' }) != -1) tempExp = tempExp.Replace('(' + tempSub + ')', simple);
                 else tempExp = tempExp.Replace(tempSub, simple);
-				//WriteLine(tempExp);
+				WriteLine(tempExp);
 
 				tempExp = tempExp.Replace("+-", "-");
                 tempExp = tempExp.Replace("--", "+");
 				
+
                 if (tempExp.IndexOf("*-")!=-1)
                 {
 					char[] tempExpArray=tempExp.ToCharArray();
@@ -208,11 +208,12 @@ namespace crvCalc
                     {
 						if (tempExpArray[i] == '*' && tempExpArray[i + 1] == '-')
                         {
-							for (int j = i; j > 0; j--)
+							for (int j = i; j >= 0; j--)
                             {
                                 if (tempExpArray[j] == '-')
                                 {
-									tempExpArray[j] = '+';
+									if (j==0) tempExpArray[j] = ' ';
+									else tempExpArray[j] = '+';
 									break;
                                 }
 								if (tempExpArray[j] == '+')
@@ -231,7 +232,42 @@ namespace crvCalc
 					}
 				}
 
-                WriteLine(tempExp);
+				if (tempExp.IndexOf("/-") != -1)
+				{
+					char[] tempExpArray = tempExp.ToCharArray();
+					for (int i = 1; i < tempExpArray.Length; i++)
+					{
+						if (tempExpArray[i] == '/' && tempExpArray[i + 1] == '-')
+						{
+							for (int j = i; j >= 0; j--)
+							{
+								if (tempExpArray[j] == '-')
+								{
+									if (j == 0) tempExpArray[j] = ' ';
+									else tempExpArray[j] = '+';
+									break;
+								}
+								if (tempExpArray[j] == '+')
+								{
+									tempExpArray[j] = '-';
+									break;
+								}
+							}
+							tempExpArray[i + 1] = ' ';
+						}
+					}
+					tempExp = new string(tempExpArray);
+					while (tempExp.IndexOf(" ") != -1)
+					{
+						tempExp = tempExp.Remove(tempExp.IndexOf(" "), 1);
+					}
+				}
+
+
+
+
+
+				WriteLine(tempExp);
 
             } while (tempExp.Split(new char[] { '*', '/', '+', '-' }).Length > 2);
 
@@ -252,16 +288,14 @@ namespace crvCalc
 		{
 			Title="crvCalc v0.01";
 
-			string testString = "-2*(-10-12)- 2*(100+5) ( 8-13)+(34,8-(72,5+5,98)(78-5)+(4-5)/4)*(-5)";
+			string testString = "-2*(-10-12)- 2*(100+5) ( 8-13)+(34,8-(72,5+5,98)(78-5)+(4-5)/4)/(-5)";
 			//string testString = "(-125+25-15)+(3-18)*2-25";
+			//string testString = "5 - 4 * (4 - 3) - 6 + 5 - (3 / 2)";
 			WriteLine(testString);
 			ExpressionLogic exp1 = new ExpressionLogic(testString);
 			WriteLine(exp1.Expression);
 			string tempExp = exp1.Expression;
 			string resultExp = ExpressionLogic.ExpressionToResult(tempExp);
-
-			
-
 			WriteLine(resultExp);
 
 			//try
