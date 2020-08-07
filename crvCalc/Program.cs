@@ -175,14 +175,8 @@ namespace crvCalc
 				sub = new string(tempExpArray);
 				while (sub.IndexOf(" ") != -1) sub = sub.Remove(sub.IndexOf(" "), 1);
 			}
-
-
-
 			return sub;
         }
-
-
-
 		public static string BracketsToSimple(string sub)
 		{
 			//IFormatProvider formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
@@ -284,6 +278,11 @@ namespace crvCalc
 				WriteLine(resultExp);
 
 			}
+			catch (DivideByZeroException de)
+			{
+				WriteLine(de.Message);
+			}
+
 			catch (Exception ex)
             {
                 WriteLine($"{ex.Message}");
