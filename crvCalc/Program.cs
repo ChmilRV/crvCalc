@@ -257,6 +257,18 @@ namespace crvCalc
 
 	}
 
+	class Help
+    {
+		public static void HelpText()
+        {
+			WriteLine("Тут будет хелп.");
+
+
+        }
+
+
+
+    }
 
 
 	class Program
@@ -264,41 +276,67 @@ namespace crvCalc
 		static void Main(string[] args)
 		{
 			Title="crvCalc v0.01";
-
-			string testString = "-2*(-10-12)- 2*(100+5) ( 8-13)+(34,8-(72,5+5,98)(78-5)+(4-5)/4)/0";
+			string expressionString;
+			expressionString = "-2*(-10-12)- 2*(100+5) ( 8-13)+(34,8-(72,5+5,98)(78-5)+(4-5)/4)/0";
 			//string testString = "(-125 + 25-15 ) + (3-18)*2-25";
 			//string testString = "5 - 4 * (4 - 3) - 6 + 5 - (3 / 2)";
 			//string testString = "5445/0";
-
-
 			//WriteLine(testString);
 
 
-			bool exit = false;
-			do
+			if (args.Length != 0)
+            {
+				if (args[0]=="-h" || args[0] == "-help") 
+				{
+					Help.HelpText();
+					WriteLine("Введите выражение (e-выход, h-помощь):");
+					expressionString = ReadLine();
+                }
+                else
+                {
+					expressionString = args[0];
+				}
+            }
+			else
+            {
+				WriteLine("Вычисление значения выражения.");
+				WriteLine("Введите выражение (e-выход, h-помощь):");
+				expressionString = ReadLine();
+
+				
+
+			}
+
+
+			bool exit = true;
+			if (expressionString == "e" || string.IsNullOrEmpty(expressionString)) exit = false;
+			if (expressionString == "h") Help.HelpText();
+
+			while (exit)
 			{
-                try
-                {
+				//try
+				//{
 
-                    ExpressionLogic exp1 = new ExpressionLogic(testString);
-					WriteLine(exp1.Expression);
-					string tempExp = exp1.Expression;
-					string resultExp = ExpressionLogic.ExpressionToResult(tempExp);
-					WriteLine(resultExp);
-
-                }
-                catch (Exception ex)
-                {
-                    WriteLine($"{ex.Message}");
-                }
-
-
-
-            } while (exit);
-
-			
+				ExpressionLogic expression = new ExpressionLogic(expressionString);
+				WriteLine(expression.Expression);
+				string tempExp = expression.Expression;
+				string resultExp = ExpressionLogic.ExpressionToResult(tempExp);
+				WriteLine(resultExp);
+				WriteLine("Введите выражение (e-выход)");
+				expressionString = ReadLine();
+				if (expressionString == "e" || string.IsNullOrEmpty(expressionString)) exit = false;
+				//}
+				//catch (Exception ex)
+				//{
+				//	WriteLine($"{ex.Message}");
+				//}
+			}
 
 
+
+
+
+			WriteLine("Press any key to continue...");
 			ReadKey();
 		}
 	}
