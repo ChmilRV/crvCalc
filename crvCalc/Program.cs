@@ -64,11 +64,14 @@ namespace crvCalc
 		}
 		public double Divide()
 		{
-			return Num1 / Num2;	
+			if (Num2==0) throw new Exception("Попытка деления на ноль.");
+			double res = Num1 / Num2;
+			return res;
+			//return Num1 / Num2;	
 		}
 
 
-	}
+		}
 	class ExpressionLogic
 	{
 		string expression;
@@ -238,17 +241,17 @@ namespace crvCalc
 		{
             string tempExp = _expr;
 			do
-            {
-                string sub = FindBracket(tempExp);
-                string tempSub = sub;
-                WriteLine(sub);
-                string simple = BracketsToSimple(sub);
-				if (tempExp.IndexOfAny(new char[] { '(', ')' }) != -1) tempExp = tempExp.Replace('(' + tempSub + ')', simple);
-                else tempExp = tempExp.Replace(tempSub, simple);
-				WriteLine(tempExp);
-				tempExp = KillTwoSign(tempExp);
-                WriteLine(tempExp);
-            } while (tempExp.Split(new char[] { '*', '/', '+', '-' }).Length > 2);
+			{
+					string sub = FindBracket(tempExp);
+                    string tempSub = sub;
+                    WriteLine(sub);
+                    string simple = BracketsToSimple(sub);
+                    if (tempExp.IndexOfAny(new char[] { '(', ')' }) != -1) tempExp = tempExp.Replace('(' + tempSub + ')', simple);
+                    else tempExp = tempExp.Replace(tempSub, simple);
+                    WriteLine(tempExp);
+                    tempExp = KillTwoSign(tempExp);
+                    WriteLine(tempExp);
+			} while (tempExp.Split(new char[] { '*', '/', '+', '-' }).Length > 2);
 			return tempExp;
 		}
 
@@ -261,36 +264,42 @@ namespace crvCalc
 		static void Main(string[] args)
 		{
 			Title="crvCalc v0.01";
-			//string testString = "-2*(-10-12)- 2*(100+5) ( 8-13)+(34,8-(72,5+5,98)(78-5)+(4-5)/4)/2";
+
+			string testString = "-2*(-10-12)- 2*(100+5) ( 8-13)+(34,8-(72,5+5,98)(78-5)+(4-5)/4)/0";
 			//string testString = "(-125 + 25-15 ) + (3-18)*2-25";
 			//string testString = "5 - 4 * (4 - 3) - 6 + 5 - (3 / 2)";
-			string testString = "5445/0";
+			//string testString = "5445/0";
 
-			WriteLine(testString);
-			
-			try
-            {
 
-				ExpressionLogic exp1 = new ExpressionLogic(testString);
-				WriteLine(exp1.Expression);
-				string tempExp = exp1.Expression;
-				string resultExp = ExpressionLogic.ExpressionToResult(tempExp);
-				WriteLine(resultExp);
+			//WriteLine(testString);
 
-			}
-			catch (DivideByZeroException de)
+
+			bool exit = false;
+			do
 			{
-				WriteLine(de.Message);
-			}
+                try
+                {
 
-			catch (Exception ex)
-            {
-                WriteLine($"{ex.Message}");
-            }
+                    ExpressionLogic exp1 = new ExpressionLogic(testString);
+					WriteLine(exp1.Expression);
+					string tempExp = exp1.Expression;
+					string resultExp = ExpressionLogic.ExpressionToResult(tempExp);
+					WriteLine(resultExp);
+
+                }
+                catch (Exception ex)
+                {
+                    WriteLine($"{ex.Message}");
+                }
 
 
-            ReadKey();
+
+            } while (exit);
+
+			
+
+
+			ReadKey();
 		}
 	}
 }
-
