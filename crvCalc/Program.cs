@@ -64,7 +64,7 @@ namespace crvCalc
 		}
 		public double Divide()
 		{
-			return Num1 / Num2;
+			return Num1 / Num2;	
 		}
 
 
@@ -92,7 +92,7 @@ namespace crvCalc
 
 
 				//добавить конвертацию 2(  ) -> 2*(  )
-				//или не бодавлять  ???
+				
 
 
 				expression = value;
@@ -116,25 +116,88 @@ namespace crvCalc
 			else sub = _expr;
 			return sub;
 		}
+
+		public static string KillTwoSign(string sub)
+        {
+			sub = sub.Replace("+-", "-");
+			sub = sub.Replace("--", "+");
+			if (sub.IndexOf("*-") != -1)
+			{
+				char[] tempExpArray = sub.ToCharArray();
+				for (int ii = 1; ii < tempExpArray.Length; ii++)
+				{
+					if (tempExpArray[ii] == '*' && tempExpArray[ii + 1] == '-')
+					{
+						for (int j = ii; j >= 0; j--)
+						{
+							if (tempExpArray[j] == '-')
+							{
+								if (j == 0) tempExpArray[j] = ' ';
+								else tempExpArray[j] = '+';
+								break;
+							}
+							if (tempExpArray[j] == '+')
+							{
+								tempExpArray[j] = '-';
+								break;
+							}
+						}
+						tempExpArray[ii + 1] = ' ';
+					}
+				}
+				sub = new string(tempExpArray);
+				while (sub.IndexOf(" ") != -1) sub = sub.Remove(sub.IndexOf(" "), 1);
+			}
+			if (sub.IndexOf("/-") != -1)
+			{
+				char[] tempExpArray = sub.ToCharArray();
+				for (int iii = 1; iii < tempExpArray.Length; iii++)
+				{
+					if (tempExpArray[iii] == '/' && tempExpArray[iii + 1] == '-')
+					{
+						for (int j = iii; j >= 0; j--)
+						{
+							if (tempExpArray[j] == '-')
+							{
+								if (j == 0) tempExpArray[j] = ' ';
+								else tempExpArray[j] = '+';
+								break;
+							}
+							if (tempExpArray[j] == '+')
+							{
+								tempExpArray[j] = '-';
+								break;
+							}
+						}
+						tempExpArray[iii + 1] = ' ';
+					}
+				}
+				sub = new string(tempExpArray);
+				while (sub.IndexOf(" ") != -1) sub = sub.Remove(sub.IndexOf(" "), 1);
+			}
+
+
+
+			return sub;
+        }
+
+
+
 		public static string BracketsToSimple(string sub)
 		{
 			//IFormatProvider formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
 			char[] opers = { '*', '/', '-', '+' };
 			string[] numbers;
-
 			while (sub.IndexOfAny(opers, 1) != -1)
 			{
-
 				foreach (char op in opers)
 				{
-					
 					if (sub.IndexOf('-')==0) 
 					{
 						numbers = (sub.Remove(0,1)).Split(opers);
 						numbers[0] = '-' + numbers[0];
 					}
 					else numbers = sub.Split(opers);
-
 					while (sub.IndexOf(op, 1) != -1 )
 					{
 						for (int i = 1; i < numbers.Length; i++)
@@ -160,30 +223,23 @@ namespace crvCalc
 										result = calc.Subtract();
 										break;
 								}
-
 								sub = sub.Replace(numbers[i - 1] + op + numbers[i], Convert.ToString(result));
-								
+								sub = KillTwoSign(sub);
 								WriteLine(sub);
 								break;
 							}
 						}
-
 						if (sub.IndexOf('-') == 0)
 						{
 							numbers = sub.Remove(0,1).Split(opers);
 							numbers[0] = '-' + numbers[0];
 						}
 						else numbers = sub.Split(opers);
-
 					}
-		
 				}
-
 			}
 			return sub;
 		}
-
-
 		public static string ExpressionToResult(string _expr)
 		{
             string tempExp = _expr;
@@ -196,87 +252,11 @@ namespace crvCalc
 				if (tempExp.IndexOfAny(new char[] { '(', ')' }) != -1) tempExp = tempExp.Replace('(' + tempSub + ')', simple);
                 else tempExp = tempExp.Replace(tempSub, simple);
 				WriteLine(tempExp);
-
-				tempExp = tempExp.Replace("+-", "-");
-                tempExp = tempExp.Replace("--", "+");
-				
-
-                if (tempExp.IndexOf("*-")!=-1)
-                {
-					char[] tempExpArray=tempExp.ToCharArray();
-                    for (int i = 1; i < tempExpArray.Length; i++)
-                    {
-						if (tempExpArray[i] == '*' && tempExpArray[i + 1] == '-')
-                        {
-							for (int j = i; j >= 0; j--)
-                            {
-                                if (tempExpArray[j] == '-')
-                                {
-									if (j==0) tempExpArray[j] = ' ';
-									else tempExpArray[j] = '+';
-									break;
-                                }
-								if (tempExpArray[j] == '+')
-								{
-									tempExpArray[j] = '-';
-									break;
-								}
-							}
-							tempExpArray[i + 1] = ' ';
-                        }
-					}
-					tempExp = new string(tempExpArray);
-					while (tempExp.IndexOf(" ") != -1)
-					{
-						tempExp = tempExp.Remove(tempExp.IndexOf(" "), 1);
-					}
-				}
-
-				if (tempExp.IndexOf("/-") != -1)
-				{
-					char[] tempExpArray = tempExp.ToCharArray();
-					for (int i = 1; i < tempExpArray.Length; i++)
-					{
-						if (tempExpArray[i] == '/' && tempExpArray[i + 1] == '-')
-						{
-							for (int j = i; j >= 0; j--)
-							{
-								if (tempExpArray[j] == '-')
-								{
-									if (j == 0) tempExpArray[j] = ' ';
-									else tempExpArray[j] = '+';
-									break;
-								}
-								if (tempExpArray[j] == '+')
-								{
-									tempExpArray[j] = '-';
-									break;
-								}
-							}
-							tempExpArray[i + 1] = ' ';
-						}
-					}
-					tempExp = new string(tempExpArray);
-					while (tempExp.IndexOf(" ") != -1)
-					{
-						tempExp = tempExp.Remove(tempExp.IndexOf(" "), 1);
-					}
-				}
-
-
-
-
-
-				WriteLine(tempExp);
-
+				tempExp = KillTwoSign(tempExp);
+                WriteLine(tempExp);
             } while (tempExp.Split(new char[] { '*', '/', '+', '-' }).Length > 2);
-
 			return tempExp;
 		}
-
-
-
-
 
 	}
 
@@ -287,28 +267,30 @@ namespace crvCalc
 		static void Main(string[] args)
 		{
 			Title="crvCalc v0.01";
-
-			string testString = "-2*(-10-12)- 2*(100+5) ( 8-13)+(34,8-(72,5+5,98)(78-5)+(4-5)/4)/(-5)";
-			//string testString = "(-125+25-15)+(3-18)*2-25";
+			//string testString = "-2*(-10-12)- 2*(100+5) ( 8-13)+(34,8-(72,5+5,98)(78-5)+(4-5)/4)/2";
+			//string testString = "(-125 + 25-15 ) + (3-18)*2-25";
 			//string testString = "5 - 4 * (4 - 3) - 6 + 5 - (3 / 2)";
+			string testString = "5445/0";
+
 			WriteLine(testString);
-			ExpressionLogic exp1 = new ExpressionLogic(testString);
-			WriteLine(exp1.Expression);
-			string tempExp = exp1.Expression;
-			string resultExp = ExpressionLogic.ExpressionToResult(tempExp);
-			WriteLine(resultExp);
+			
+			try
+            {
 
-			//try
-			//{
-			//
-			//}
-			//catch (Exception ex)
-			//{
-			//    Console.WriteLine($"{ex.Message}");
-			//}
+				ExpressionLogic exp1 = new ExpressionLogic(testString);
+				WriteLine(exp1.Expression);
+				string tempExp = exp1.Expression;
+				string resultExp = ExpressionLogic.ExpressionToResult(tempExp);
+				WriteLine(resultExp);
+
+			}
+			catch (Exception ex)
+            {
+                WriteLine($"{ex.Message}");
+            }
 
 
-			ReadKey();
+            ReadKey();
 		}
 	}
 }
