@@ -262,7 +262,7 @@ namespace crvCalc
 		{
 			Title="crvCalc v0.01";
 			bool exit = false;
-			string expressionString=null;
+			string expressionString;
 			//expressionString = "-2*(-10.5*10-12)- 2*(100+5) ( 8-13)+(34.8-(72.5+5.98)(78-5)+(4-5)/4)/2";
 			//expressionString = "(-125 + 25-15 )/0 + (3-18)*2-25";
             //expressionString = "5 - 4 * (4 - 3) - 6 + 5 - (3 / 2)";
@@ -278,7 +278,8 @@ namespace crvCalc
                 }
                 else
                 {
-                    for (int i = 0; i < args.Length; i++) expressionString = expressionString + args[i];
+					expressionString = args[0];
+					if (args.Length > 1) for (int i = 1; i < args.Length; i++) expressionString += args[i];
                     exit = false;
                 }
             }
