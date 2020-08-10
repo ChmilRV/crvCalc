@@ -1,14 +1,14 @@
 ﻿using System;
 using static System.Console;
 using System.Globalization;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-using System.Xml.Schema;
-using System.Net;
-using System.Security.Cryptography.X509Certificates;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
+//using System.Text.RegularExpressions;
+//using System.Xml.Schema;
+//using System.Net;
+//using System.Security.Cryptography.X509Certificates;
 /*Разработать консольный калькулятор.
 При разработке рекомендуется:
 	использовать ООП (создать класс математических действий, в котором необходимо реализовать методы для выполнения арифметических действий и т.д.);
@@ -67,11 +67,8 @@ namespace crvCalc
 			if (Num2==0) throw new Exception("Попытка деления на ноль.");
 			double res = Num1 / Num2;
 			return res;
-			//return Num1 / Num2;	
 		}
-
-
-		}
+	}
 	class ExpressionLogic
 	{
 		string expression;
@@ -83,21 +80,13 @@ namespace crvCalc
 			}
 			set
 			{
-				while (value.IndexOf(" ") != -1)
-				{
-					value = value.Remove(value.IndexOf(" "), 1);
-				}
-
-				while (value.IndexOf(")(") != -1)
-				{
-					value = value.Insert(value.IndexOf(")(") + 1, "*");
-				}
-
-
+				while (value.IndexOf(" ") != -1) value = value.Remove(value.IndexOf(" "), 1);
+				while (value.IndexOf(")(") != -1) value = value.Insert(value.IndexOf(")(") + 1, "*");
+				while (value.IndexOf("++") != -1) value = value.Remove(value.IndexOf("++"), 1);
+				while (value.IndexOf("--") != -1) value = value.Remove(value.IndexOf("--"), 1);
+				while (value.IndexOf("**") != -1) value = value.Remove(value.IndexOf("**"), 1);
+				while (value.IndexOf("//") != -1) value = value.Remove(value.IndexOf("//"), 1);
 				//добавить конвертацию 2(  ) -> 2*(  )
-				
-
-
 				expression = value;
 			}
 		}
@@ -107,7 +96,6 @@ namespace crvCalc
 		}
 		public static string FindBracket(string _expr)
 		{
-
 			string sub;
 			int openBracket;
 			int closeBracket = _expr.IndexOf(')');
@@ -119,7 +107,6 @@ namespace crvCalc
 			else sub = _expr;
 			return sub;
 		}
-
 		public static string KillTwoSign(string sub)
         {
 			sub = sub.Replace("+-", "-");
@@ -254,9 +241,7 @@ namespace crvCalc
 			} while (tempExp.Split(new char[] { '*', '/', '+', '-' }).Length > 2);
 			return tempExp;
 		}
-
 	}
-
 	class Help
     {
 		public static void HelpText()
@@ -268,14 +253,9 @@ namespace crvCalc
 				"Предназначен для вычисления выражений, содержащие основные математические операции:\n" +
 				"сложение, вычитание, умножение, деление.\n" +
 				"Допускается использование выражений со скобками.\n" +
-				"Вычисления производится с учетом приоритета математических операций.\n");
+				"Вычисления производятся с учетом приоритета математических операций.\n");
         }
-
-
-
     }
-
-
 	class Program
 	{
 		static void Main(string[] args)
@@ -287,12 +267,12 @@ namespace crvCalc
 			//expressionString = "(-125 + 25-15 )/0 + (3-18)*2-25";
             //expressionString = "5 - 4 * (4 - 3) - 6 + 5 - (3 / 2)";
             //expressionString = "5445/0";
-
             if (args.Length != 0)
             {
                 if (args[0] == "-h" || args[0] == "-help")
                 {
                     Help.HelpText();
+					WriteLine("\tКонсольный калькулятор.\n");
                     WriteLine("Введите выражение (e-выход, h-помощь):");
                     expressionString = ReadLine();
                 }
@@ -304,7 +284,8 @@ namespace crvCalc
             }
             else
             {
-                WriteLine("Вычисление значения выражения.");
+				WriteLine("\tКонсольный калькулятор.\n");
+				WriteLine("Вычисление значения выражения.");
                 WriteLine("Введите выражение (e-выход, h-помощь):");
                 expressionString = ReadLine();
                 if (expressionString == "e" || string.IsNullOrEmpty(expressionString)) exit = true;
