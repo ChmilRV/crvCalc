@@ -305,7 +305,7 @@ namespace crvCalc
 					WriteLine("=> " + expression.Expression);
 					string tempExp = expression.Expression;
 					string resultExp = ExpressionLogic.ExpressionToResult(tempExp);
-					//WriteLine(resultExp);
+					WriteLine(resultExp);
 					WriteLine("Введите выражение (e-выход)");
 					expressionString = ReadLine();
 					if (expressionString == "e" || string.IsNullOrEmpty(expressionString)) exit = true;
