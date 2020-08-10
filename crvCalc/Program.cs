@@ -182,7 +182,7 @@ namespace crvCalc
         }
 		public static string BracketsToSimple(string sub)
 		{
-			//IFormatProvider formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
+			IFormatProvider formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
 			char[] opers = { '*', '/', '-', '+' };
 			string[] numbers;
 			while (sub.IndexOfAny(opers, 1) != -1)
@@ -201,8 +201,8 @@ namespace crvCalc
 						{
 							if (sub.IndexOf(numbers[i], sub.IndexOf(op,1)) == sub.IndexOf(op,1) + 1)
 							{
-								double num1 = Convert.ToDouble(numbers[i - 1]/*, formatter*/);
-								double num2 = Convert.ToDouble(numbers[i]/*, formatter*/);
+								double num1 = Convert.ToDouble(numbers[i - 1], formatter);
+								double num2 = Convert.ToDouble(numbers[i], formatter);
 								Operations calc = new Operations(num1, num2);
 								double result = 0;
 								switch (op)
@@ -222,7 +222,7 @@ namespace crvCalc
 								}
 								sub = sub.Replace(numbers[i - 1] + op + numbers[i], Convert.ToString(result));
 								sub = KillTwoSign(sub);
-								WriteLine(sub);
+								//WriteLine(sub);
 								break;
 							}
 						}
@@ -244,13 +244,13 @@ namespace crvCalc
 			{
 					string sub = FindBracket(tempExp);
                     string tempSub = sub;
-                    WriteLine(sub);
+                    //WriteLine(sub);
                     string simple = BracketsToSimple(sub);
                     if (tempExp.IndexOfAny(new char[] { '(', ')' }) != -1) tempExp = tempExp.Replace('(' + tempSub + ')', simple);
                     else tempExp = tempExp.Replace(tempSub, simple);
-                    WriteLine(tempExp);
+                    //WriteLine(tempExp);
                     tempExp = KillTwoSign(tempExp);
-                    WriteLine(tempExp);
+                WriteLine("=> " + tempExp);
 			} while (tempExp.Split(new char[] { '*', '/', '+', '-' }).Length > 2);
 			return tempExp;
 		}
@@ -276,68 +276,62 @@ namespace crvCalc
 		static void Main(string[] args)
 		{
 			Title="crvCalc v0.01";
-			string expressionString;
-			expressionString = "-2*(-10-12)- 2*(100+5) ( 8-13)+(34,8-(72,5+5,98)(78-5)+(4-5)/4)/0";
-			//string testString = "(-125 + 25-15 ) + (3-18)*2-25";
-			//string testString = "5 - 4 * (4 - 3) - 6 + 5 - (3 / 2)";
-			//string testString = "5445/0";
-			//WriteLine(testString);
+			bool exit = false;
+			string expressionString=null;
+			//expressionString = "-2*(-10.5*10-12)- 2*(100+5) ( 8-13)+(34.8-(72.5+5.98)(78-5)+(4-5)/4)/2";
+			//expressionString = "(-125 + 25-15 )/0 + (3-18)*2-25";
+            //expressionString = "5 - 4 * (4 - 3) - 6 + 5 - (3 / 2)";
+            //expressionString = "5445/0";
 
-
-			if (args.Length != 0)
+            if (args.Length != 0)
             {
-				if (args[0]=="-h" || args[0] == "-help") 
-				{
-					Help.HelpText();
-					WriteLine("Введите выражение (e-выход, h-помощь):");
-					expressionString = ReadLine();
+                if (args[0] == "-h" || args[0] == "-help")
+                {
+                    Help.HelpText();
+                    WriteLine("Введите выражение (e-выход, h-помощь):");
+                    expressionString = ReadLine();
                 }
                 else
                 {
-					expressionString = args[0];
-				}
+                    for (int i = 0; i < args.Length; i++) expressionString = expressionString + args[i];
+                    exit = false;
+                }
             }
-			else
+            else
             {
-				WriteLine("Вычисление значения выражения.");
-				WriteLine("Введите выражение (e-выход, h-помощь):");
-				expressionString = ReadLine();
+                WriteLine("Вычисление значения выражения.");
+                WriteLine("Введите выражение (e-выход, h-помощь):");
+                expressionString = ReadLine();
+                if (expressionString == "e" || string.IsNullOrEmpty(expressionString)) exit = true;
+                if (expressionString == "h")
+                {
+                    Help.HelpText();
+                    exit = true;
+                }
+            }
 
-				
-
-			}
-
-
-			bool exit = true;
-			if (expressionString == "e" || string.IsNullOrEmpty(expressionString)) exit = false;
-			if (expressionString == "h") Help.HelpText();
-
-			while (exit)
+            try
 			{
-				//try
-				//{
-
-				ExpressionLogic expression = new ExpressionLogic(expressionString);
-				WriteLine(expression.Expression);
-				string tempExp = expression.Expression;
-				string resultExp = ExpressionLogic.ExpressionToResult(tempExp);
-				WriteLine(resultExp);
-				WriteLine("Введите выражение (e-выход)");
-				expressionString = ReadLine();
-				if (expressionString == "e" || string.IsNullOrEmpty(expressionString)) exit = false;
-				//}
-				//catch (Exception ex)
-				//{
-				//	WriteLine($"{ex.Message}");
-				//}
+				while (!exit)
+				{
+					ExpressionLogic expression = new ExpressionLogic(expressionString);
+					WriteLine("=> " + expression.Expression);
+					string tempExp = expression.Expression;
+					string resultExp = ExpressionLogic.ExpressionToResult(tempExp);
+					//WriteLine(resultExp);
+					WriteLine("Введите выражение (e-выход)");
+					expressionString = ReadLine();
+					if (expressionString == "e" || string.IsNullOrEmpty(expressionString)) exit = true;
+				}
 			}
-
-
-
-
-
-			WriteLine("Press any key to continue...");
+			catch (Exception ex)
+			{
+				WriteLine($"{ex.Message}");
+				
+			}
+            WriteLine("Press any key to continue...");
 			ReadKey();
 		}
 	}
 }
+
