@@ -50,18 +50,30 @@ namespace crvCalc
 			Num1 = _num1;
 			Num2 = _num2;
 		}
+		/// <summary>
+		/// Метод сложения числа Num1 и Num2
+		/// </summary>
 		public double Add()
 		{
 			return Num1 + Num2;
 		}
+		/// <summary>
+		/// Метод вычитания числа Num2 из Num1
+		/// </summary>
 		public double Subtract()
 		{
 			return Num1 - Num2;
 		}
+		/// <summary>
+		/// Метод умножения числа Num1 на Num2
+		/// </summary>
 		public double Multiply()
 		{
 			return Num1 * Num2;
 		}
+		/// <summary>
+		/// Метод деления числа Num1 на Num2
+		/// </summary>
 		public double Divide()
 		{
 			if (Num2==0) throw new Exception("Попытка деления на ноль.");
@@ -69,9 +81,15 @@ namespace crvCalc
 			return res;
 		}
 	}
+	/// <summary>
+	/// Класс логических преобразований
+	/// </summary>
 	class ExpressionLogic
 	{
 		string expression;
+		/// <summary>
+		/// Свойство корректировки погрешностей введенного выражения
+		/// </summary>
 		public string Expression
 		{
 			get
@@ -94,6 +112,9 @@ namespace crvCalc
 		{
 			Expression = _expression;
 		}
+		/// <summary>
+		/// Метод нахождения первого выражения в скобках
+		/// </summary>
 		public static string FindBracket(string _expr)
 		{
 			string sub;
@@ -107,6 +128,9 @@ namespace crvCalc
 			else sub = _expr;
 			return sub;
 		}
+		/// <summary>
+		/// Метод выносит минус за скобки
+		/// </summary>
 		public static string KillTwoSign(string sub)
         {
 			sub = sub.Replace("+-", "-");
@@ -167,6 +191,9 @@ namespace crvCalc
 			}
 			return sub;
         }
+		/// <summary>
+		/// Метод возвращает результат вычисления скобок в основное выражение
+		/// </summary>
 		public static string BracketsToSimple(string sub)
 		{
 			IFormatProvider formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
@@ -224,6 +251,9 @@ namespace crvCalc
 			}
 			return sub;
 		}
+		/// <summary>
+		/// Метод преобразует выражение в конечный результат
+		/// </summary>
 		public static string ExpressionToResult(string _expr)
 		{
             string tempExp = _expr;
@@ -242,6 +272,9 @@ namespace crvCalc
 			return tempExp;
 		}
 	}
+	/// <summary>
+	/// Класс справки
+	/// </summary>
 	class Help
     {
 		public static void HelpText()
@@ -321,4 +354,3 @@ namespace crvCalc
 		}
 	}
 }
-
