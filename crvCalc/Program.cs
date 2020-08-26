@@ -19,6 +19,9 @@ using System.Globalization;
 	разработать интерфейс, используя символы псевдографики.*/
 namespace crvCalc
 {
+	/// <summary>
+	/// Класс математических выражений
+	/// </summary>
 	class Operations
 	{
 		double num1;
@@ -104,6 +107,7 @@ namespace crvCalc
 				while (value.IndexOf("--") != -1) value = value.Remove(value.IndexOf("--"), 1);
 				while (value.IndexOf("**") != -1) value = value.Remove(value.IndexOf("**"), 1);
 				while (value.IndexOf("//") != -1) value = value.Remove(value.IndexOf("//"), 1);
+				//добавить конвертацию 3+*+3
 				//добавить конвертацию 2(  ) -> 2*(  )
 				expression = value;
 			}
@@ -329,7 +333,6 @@ namespace crvCalc
                     exit = true;
                 }
             }
-
             try
 			{
 				while (!exit)
